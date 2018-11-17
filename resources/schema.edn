@@ -1,0 +1,27 @@
+[^:contentful/tag
+ default
+
+ ^{:doc "Reference documentation"
+   :contentful/display-name "Reference Entity"}
+ Reference
+ [^{:type String
+    :doc "Field documentation"
+    :contentful/display-name "My Short Text Field"
+    :contentful/display-field true}
+  short-text-field
+
+  ^{:type String}
+  default-name-short-text-field
+
+  ^{:type String
+    :cardinality [0 n]}
+  many-short-texts-field
+  
+  ^{:type String
+    :contentful/widget-id "markdown"}
+  short-text-widget-field
+
+  ^{:contentful/type "Text"}
+  long-text-field
+  ]
+ ]
