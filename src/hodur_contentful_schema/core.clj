@@ -124,6 +124,8 @@
 
 (defmethod get-field-widget "Date" [_] "datePicker")
 
+(defmethod get-field-widget "RichText" [_] "richTextEditor")
+
 (defmethod get-field-widget "Asset" [field]
   (if (= :one (field-card-type field))
     "assetLinkEditor"
