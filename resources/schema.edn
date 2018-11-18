@@ -32,8 +32,13 @@
   many-unions]
 
  OtherEntity
- [^DateTime
-  a-date-time]
+ [^:DateTime
+  a-date-time
+
+  ^{:type String
+    :contentful/widget-id "slug"
+    :contentful/display-field true}
+  just-for-show]
 
  StillAnotherEntity
  [^{:type Reference}

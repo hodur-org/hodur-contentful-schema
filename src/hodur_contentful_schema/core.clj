@@ -193,16 +193,27 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defn ^:private get-display-field [t]
+  (some->> t
+           :field/_parent
+           (some (fn [{:keys [contentful/display-field
+                              field/camelCaseName]}]
+                   (when display-field (name camelCaseName))))))
+
 (defn ^:private parse-content-type [{:keys [type/camelCaseName type/doc field/_parent] :as t}
                                     {:keys [space-id]}]
-  {:sys {:space {:sys {:type "Link"
-                       :link-type "Space"
-                       :id space-id}}
-         :id (name camelCaseName)
-         :type "ContentType"}
-   :name (display-name t)
-   :description doc
-   :fields (parse-content-type-fields _parent)})
+  (let [display-field (get-display-field t)]
+    (cond-> {:sys {:space {:sys {:type "Link"
+                                 :link-type "Space"
+                                 :id space-id}}
+                   :id (name camelCaseName)
+                   :type "ContentType"}
+             :name (display-name t)
+             :description doc
+             :fields (parse-content-type-fields _parent)}
+
+      display-field
+      (assoc :display-field (->camelCaseString display-field)))))
 
 (defn ^:private parse-editor-type [{:keys [type/camelCaseName field/_parent] :as t}]
   {:sys {:id "default"
