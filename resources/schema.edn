@@ -18,7 +18,7 @@
   many-short-texts-field
   
   ^{:type String
-    :contentful/widget-id "markdown"}
+    :contentful/widget-id "slugEditor"}
   short-text-widget-field
 
   ^{:contentful/type "Text"}
@@ -55,7 +55,11 @@
   ^{:type DateTime
     :contentful/ampm "12"}
   american-style-time-field
-  ]
+
+  ^{:type String
+    :optional true
+    :contentful/type "Location"}
+  optional-location-field]
 
  OtherEntity
  [^:DateTime
@@ -77,4 +81,47 @@
  ^:union
  AUnion
  [OtherEntity StillAnotherEntity]
+
+ ValidationEntity
+ [^{:type String
+    :contentful/validation-in ["iOS" "Android"]}
+  platform-field
+
+  ^{:type Integer
+    :contentful/validation-range [5 15]
+    :contentful/validation-range-message "Must be between 5 and 15"}
+  range-field
+
+  ^{:type String
+    :contentful/validation-regexp-pattern "^such"
+    :contentful/validation-regexp-flags "im"}
+  regexp-field
+
+  ^{:type String
+    :contentful/validation-unique true}
+  unique-field
+
+  ^{:type DateTime
+    :contentful/validation-date-range ["2017-05-01" "2020-05-01"]}
+  date-range-field
+
+  ^{:type String
+    :contentful/type "RichText"
+    :contentful/validation-enabled-node-types ["heading-1"
+                                               "quote"
+                                               "embedded-entry-block"]}
+  enabled-node-types-field
+
+  ^{:type String
+    :contentful/type "RichText"
+    :contentful/validation-enabled-marks ["bold" "italics"]}
+  enabled-marks-field
+
+  ^{:type String
+    :contentful/validation-in ["foo" "bar"]
+    :contentful/validation-in-message "Should be foo or bar"
+    :contentful/validation-size [2 5]
+    :contentful/validation-size-message "Should have 2 to 5 characters"}
+  multiple-validations-field]
+
  ]
