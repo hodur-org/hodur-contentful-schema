@@ -165,7 +165,8 @@
            :disabled false
            :omitted false}
 
-    (= :one (field-card-type field))
+    (and (is-field-user-entity? field)
+         (= :one (field-card-type field)))
     (assoc :link-type "Entry")
     
     (= :many (field-card-type field))
@@ -243,7 +244,8 @@
 
 
 (let [meta-db (engine/init-path (io/resource "schema.edn"))]
-  (println (schema meta-db {:space-id "oewsurrg31ok"})))
+  (println (schema meta-db {:space-id "oewsurrg31ok"}))
+  (spit "my-lovely-model.json" (schema meta-db {:space-id "oewsurrg31ok"})))
 
 
 #_(let [meta-db (engine/init-path (io/resource "schema.edn"))]
