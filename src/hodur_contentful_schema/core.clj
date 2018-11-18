@@ -6,14 +6,22 @@
             [datascript.query-v3 :as q]))
 
 (defn ^:private get-types [conn]
-  (d/q '[:find [(pull ?t [* {:type/implements [*]
-                             :field/_parent
-                             [* {:field/type [*]}]}]) ...]
-         :where
-         [?t :type/name]
-         [?t :contentful/tag true]
-         [?t :type/nature :user]]
-       @conn))
+  (let [selector '[* {:type/implements [*]
+                      :field/_parent
+                      [* {:field/type
+                          [* {:field/_parent [*]}]}]}]
+        eids (-> (q/q '[:find ?t
+                        :where
+                        [?t :type/name]
+                        [?t :contentful/tag true]
+                        [?t :type/nature :user]
+                        (not [?t :type/interface true])
+                        (not [?t :type/union true])]
+                      @conn)
+                 vec flatten)]
+    (->> eids
+         (d/pull-many @conn selector)
+         (sort-by :type/name))))
 
 (defn ^:private display-name [{:keys [contentful/display-name] :as type-or-field}]
   (or display-name
@@ -28,66 +36,86 @@
 (defn ^:private field-type-nature [field]
   (-> field :field/type :type/nature))
 
+(defn ^:private is-field-user-entity? [field]
+  (= :user (field-type-nature field)))
+
 (defn ^:private field-card-type [{:keys [field/cardinality] :as field}]
   (if (and (= 1 (first cardinality))
            (= 1 (second cardinality)))
-    :ref-one
-    :ref-many))
+    :one
+    :many))
 
-(defn ^:private field-type-logic [field]
+(defn ^:private base-spec-field-type [field]
   (let [contentful-type (-> field :contentful/type)
-        ref-type (-> field :field/type :type/name)
-        card-type (field-card-type field)
-        ref-type-nature (field-type-nature field)]
-    (if contentful-type
-      (if (and (= "Symbol" contentful-type)
-               (= :ref-many card-type))
-        card-type
-        contentful-type)
-      (if (or (= :user ref-type-nature)
-              (and (= "String" ref-type)
-                   (= :ref-many card-type)))
-        card-type
-        ref-type))))
+        ref-type (-> field :field/type :type/camelCaseName)]
+    (or contentful-type ref-type)))
 
-(defmulti ^:private field-type field-type-logic)
+(defmulti ^:private spec-field-type base-spec-field-type)
 
-(defmethod field-type "String" [_] "Symbol")
+(defmethod spec-field-type "String" [_] "Symbol")
 
-(defmethod field-type "Float" [_] "Number")
+(defmethod spec-field-type "Float" [_] "Number")
 
-(defmethod field-type "Integer" [_] "Integer")
+(defmethod spec-field-type "Integer" [_] "Integer")
 
-(defmethod field-type "Boolean" [_] "Boolean")
+(defmethod spec-field-type "Boolean" [_] "Boolean")
 
-(defmethod field-type "DateTime" [_] "Date")
+(defmethod spec-field-type "DateTime" [_] "Date")
 
-(defmethod field-type "ID" [_] "Symbol")
+(defmethod spec-field-type "ID" [_] "Symbol")
 
-(defmethod field-type :ref-one [_] "Link")
+(defmethod spec-field-type :default [field]
+  (base-spec-field-type field))
 
-(defmethod field-type :ref-many [_] "Array")
+(defn ^:private get-type-definition
+  [field]
+  (let [spec-type (spec-field-type field)
+        card-type (field-card-type field)]
+    (if (= :many card-type)
+      "Array"
+      (if (is-field-user-entity? field)
+        "Link"
+        spec-type))))
 
-(defmethod field-type :default [{:keys [contentful/type]}] type)
+(defn ^:private get-link-content-types [field]
+  (if (-> field :field/type :type/union)
+    (map #(name (:field/camelCaseName %)) (-> field :field/type :field/_parent))
+    [(-> field :field/type :type/camelCaseName name)]))
+
+(defn ^:private get-type-many [field]
+  (if (is-field-user-entity? field)
+    {:type "Link"
+     :link-type "Entry"
+     :validations [{:link-content-type (get-link-content-types field)}]}
+    {:type (spec-field-type field)
+     :validations []}))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn ^:private build-ref-many []
-  {:type })
+(defn ^:private get-field-validations [field]
+  (if (and (is-field-user-entity? field)
+           (= :one (field-card-type field)))
+    [{:link-content-type (get-link-content-types field)}]
+    []))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn ^:private parse-content-type-field [{:keys [field/camelCaseName
                                                   field/optional] :as field}]
-  (cond-> {:id (str camelCaseName)
+  (cond-> {:id (name camelCaseName)
            :name (display-name field)
-           :type (field-type field)
+           :type (get-type-definition field)
            :localized false
            :required (not optional)
-           :validations []
+           :validations (get-field-validations field)
            :disabled false
            :omitted false}
 
-    (= :ref-many (field-type-logic field))
-    (assoc :items (build-ref-many field))))
+    (= :one (field-card-type field))
+    (assoc :link-type "Entry")
+    
+    (= :many (field-card-type field))
+    (assoc :items (get-type-many field))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -142,8 +170,13 @@
 (require '[hodur-engine.core :as engine])
 (require '[clojure.java.io :as io])
 
-(let [meta-db (engine/init-path (io/resource "schema.edn"))]
-  (get-types meta-db))
 
 (let [meta-db (engine/init-path (io/resource "schema.edn"))]
   (clojure.pprint/pprint (schema meta-db {:space-id "oewsurrg31ok"})))
+
+
+#_(let [meta-db (engine/init-path (io/resource "schema.edn"))]
+    (schema meta-db {:space-id "oewsurrg31ok"}))
+
+
+#_(get-type-many '{:field/snake_case_name :many_unions, :field/parent #:db{:id 7}, :field/kebab-case-name :many-unions, :field/cardinality [0 n], :contentful/tag true, :db/id 15, :field/type {:type/snake_case_name :a_union, :type/nature :user, :type/kebab-case-name :a-union, :type/union true, :contentful/tag true, :db/id 14, :type/name AUnion, :type/camelCaseName :aUnion, :type/PascalCaseName :AUnion}, :field/name many-unions, :field/camelCaseName :manyUnions, :field/PascalCaseName :ManyUnions})

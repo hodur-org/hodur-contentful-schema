@@ -23,5 +23,27 @@
 
   ^{:contentful/type "Text"}
   long-text-field
-  ]
+
+  ^{:type AUnion}
+  a-single-union
+
+  ^{:type AUnion
+    :cardinality [0 n]}
+  many-unions]
+
+ OtherEntity
+ [^DateTime
+  a-date-time]
+
+ StillAnotherEntity
+ [^{:type Reference}
+  a-single-reference
+
+  ^{:type Reference
+    :cardinality [0 n]}
+  many-references]
+
+ ^:union
+ AUnion
+ [OtherEntity StillAnotherEntity]
  ]
