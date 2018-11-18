@@ -1,5 +1,6 @@
 (ns hodur-contentful-schema.core
-  (:require [camel-snake-kebab.core :refer [->Camel_Snake_Case_String]]
+  (:require [camel-snake-kebab.core :refer [->Camel_Snake_Case_String
+                                            ->camelCaseString]]
             [cheshire.core :as json]
             [clojure.string :as string]
             [datascript.core :as d]
@@ -231,10 +232,10 @@
    (schema conn nil))
   ([conn opts]
    (let [types (get-types conn)]
-     {:content-types     (parse-content-types types opts)
-      :editor-interfaces (parse-editor-interfaces types opts)})))
-
-
+     (-> {:content-types     (parse-content-types types opts)
+          :editor-interfaces (parse-editor-interfaces types opts)}
+         (json/generate-string {:pretty true
+                                :key-fn ->camelCaseString})))))
 
 
 (require '[hodur-engine.core :as engine])
@@ -242,11 +243,8 @@
 
 
 (let [meta-db (engine/init-path (io/resource "schema.edn"))]
-  (clojure.pprint/pprint (schema meta-db {:space-id "oewsurrg31ok"})))
+  (println (schema meta-db {:space-id "oewsurrg31ok"})))
 
 
 #_(let [meta-db (engine/init-path (io/resource "schema.edn"))]
     (schema meta-db {:space-id "oewsurrg31ok"}))
-
-
-#_(get-type-many '{:field/snake_case_name :many_unions, :field/parent #:db{:id 7}, :field/kebab-case-name :many-unions, :field/cardinality [0 n], :contentful/tag true, :db/id 15, :field/type {:type/snake_case_name :a_union, :type/nature :user, :type/kebab-case-name :a-union, :type/union true, :contentful/tag true, :db/id 14, :type/name AUnion, :type/camelCaseName :aUnion, :type/PascalCaseName :AUnion}, :field/name many-unions, :field/camelCaseName :manyUnions, :field/PascalCaseName :ManyUnions})
