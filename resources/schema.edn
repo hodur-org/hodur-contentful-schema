@@ -29,7 +29,33 @@
 
   ^{:type AUnion
     :cardinality [0 n]}
-  many-unions]
+  many-unions
+
+  ^{:type Integer
+    :contentful/stars 10}
+  stars-field
+
+  ^{:type Boolean
+    :contentful/true-label "Si!"
+    :contentful/false-label "No!"}
+  si-o-no-field
+
+  ^{:type DateTime
+    :contentful/format "dateonly"}
+  date-only-field
+  
+  ^{:type DateTime
+    :contentful/format "time"}
+  time-field
+
+  ^{:type DateTime
+    :contentful/format "timeZ"}
+  full-date-time-field
+
+  ^{:type DateTime
+    :contentful/ampm "12"}
+  american-style-time-field
+  ]
 
  OtherEntity
  [^:DateTime

@@ -147,10 +147,10 @@
   (cond-> {}
     doc         (assoc :help-text doc)
     true-label  (assoc :true-label true-label)
-    false-label (assoc :true-label false-label)
-    stars       (assoc :true-label stars)
-    format      (assoc :true-label format)
-    ampm        (assoc :true-label ampm)))
+    false-label (assoc :false-label false-label)
+    stars       (assoc :stars stars)
+    format      (assoc :format format)
+    ampm        (assoc :ampm ampm)))
   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
