@@ -90,14 +90,67 @@
     {:type (spec-field-type field)
      :validations []}))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defn ^:private get-field-validations [field]
   (if (and (is-field-user-entity? field)
            (= :one (field-card-type field)))
     [{:link-content-type (get-link-content-types field)}]
     []))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmulti ^:private get-field-widget
+  (fn [field]
+    (let [contentful-widget-id (-> field :contentful/widget-id)
+          spec-type (spec-field-type field)
+          is-user? (is-field-user-entity? field)]
+      (if is-user?
+        "Entry"
+        (or contentful-widget-id spec-type)))))
+
+(defmethod get-field-widget "Symbol" [_] "singleLine")
+
+(defmethod get-field-widget "Text" [_] "multipleLine")
+
+(defmethod get-field-widget "Location" [_] "locationEditor")
+
+(defmethod get-field-widget "Object" [_] "objectEditor")
+
+(defmethod get-field-widget "Number" [_] "numberEditor")
+
+(defmethod get-field-widget "Integer" [_] "numberEditor")
+
+(defmethod get-field-widget "Boolean" [_] "boolean")
+
+(defmethod get-field-widget "Date" [_] "datePicker")
+
+(defmethod get-field-widget "Asset" [field]
+  (if (= :one (field-card-type field))
+    "assetLinkEditor"
+    "assetLinksEditor"))
+
+(defmethod get-field-widget "Entry" [field]
+  (if (= :one (field-card-type field))
+    "entryLinkEditor"
+    "entryLinksEditor"))
+
+(defmethod get-field-widget :default [{:keys [contentful/widget-id]}] widget-id)
+
+(defn ^:private has-editor-settings? [{:keys [field/doc contentful/true-label
+                                              contentful/false-label contentful/stars
+                                              contentful/format contentful/ampm]}]
+  (boolean (or doc true-label false-label stars format ampm)))
+
+(defn ^:private get-editor-settings [{:keys [field/doc contentful/true-label
+                                             contentful/false-label contentful/stars
+                                             contentful/format contentful/ampm]}]
+  (cond-> {}
+    doc         (assoc :help-text doc)
+    true-label  (assoc :true-label true-label)
+    false-label (assoc :true-label false-label)
+    stars       (assoc :true-label stars)
+    format      (assoc :true-label format)
+    ampm        (assoc :true-label ampm)))
+  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn ^:private parse-content-type-field [{:keys [field/camelCaseName
@@ -117,11 +170,23 @@
     (= :many (field-card-type field))
     (assoc :items (get-type-many field))))
 
+(defn ^:private parse-editor-field [{:keys [field/camelCaseName] :as field}]
+  (cond-> {:field-id (name camelCaseName)
+           :widget-id (get-field-widget field)}
+
+    (has-editor-settings? field)
+    (assoc :settings (get-editor-settings field))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn ^:private parse-content-type-fields [fields]
   (reduce (fn [c field]
             (conj c (parse-content-type-field field)))
+          [] fields))
+
+(defn ^:private parse-editor-fields [fields]
+  (reduce (fn [c field]
+            (conj c (parse-editor-field field)))
           [] fields))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -137,8 +202,13 @@
    :description doc
    :fields (parse-content-type-fields _parent)})
 
-(defn ^:private parse-editor-type [t]
-  {})
+(defn ^:private parse-editor-type [{:keys [type/camelCaseName field/_parent] :as t}]
+  {:sys {:id "default"
+         :type "EditorInterface"
+         :content-type {:id (name camelCaseName)
+                        :type "Link"
+                        :link-type "ContentType"}}
+   :controls (parse-editor-fields _parent)})
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
