@@ -291,14 +291,10 @@
                                 :key-fn ->camelCaseString})))))
 
 
-(require '[hodur-engine.core :as engine])
-(require '[clojure.java.io :as io])
+(comment
+  (require '[hodur-engine.core :as engine])
+  (require '[clojure.java.io :as io])
 
-
-(let [meta-db (engine/init-path (io/resource "schema.edn"))]
-  (println (schema meta-db {:space-id "oewsurrg31ok"}))
-  (spit "my-lovely-model.json" (schema meta-db {:space-id "oewsurrg31ok"})))
-
-
-#_(let [meta-db (engine/init-path (io/resource "schema.edn"))]
-    (schema meta-db {:space-id "oewsurrg31ok"}))
+  (let [meta-db (engine/init-path (io/resource "schema.edn"))]
+    (println (schema meta-db {:space-id "oewsurrg31ok"}))
+    (spit "my-lovely-model.json" (schema meta-db {:space-id "oewsurrg31ok"}))))

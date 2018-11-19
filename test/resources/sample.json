@@ -1,0 +1,658 @@
+{
+  "contentTypes" : [ {
+    "sys" : {
+      "space" : {
+        "sys" : {
+          "type" : "Link",
+          "linkType" : "Space",
+          "id" : "oewsurrg31ok"
+        }
+      },
+      "id" : "otherEntity",
+      "type" : "ContentType",
+      "publishedVersion" : 1
+    },
+    "name" : "Other Entity",
+    "description" : null,
+    "fields" : [ {
+      "id" : "aDateTime",
+      "name" : "A Date Time",
+      "type" : "Date",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "justForShow",
+      "name" : "Just For Show",
+      "type" : "Symbol",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false
+    } ],
+    "displayField" : "justForShow"
+  }, {
+    "sys" : {
+      "space" : {
+        "sys" : {
+          "type" : "Link",
+          "linkType" : "Space",
+          "id" : "oewsurrg31ok"
+        }
+      },
+      "id" : "reference",
+      "type" : "ContentType",
+      "publishedVersion" : 1
+    },
+    "name" : "Reference Entity",
+    "description" : "Reference documentation",
+    "fields" : [ {
+      "id" : "shortTextField",
+      "name" : "My Short Text Field",
+      "type" : "Symbol",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "defaultNameShortTextField",
+      "name" : "Default Name Short Text Field",
+      "type" : "Symbol",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "manyShortTextsField",
+      "name" : "Many Short Texts Field",
+      "type" : "Array",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false,
+      "items" : {
+        "type" : "Symbol",
+        "validations" : [ ]
+      }
+    }, {
+      "id" : "shortTextWidgetField",
+      "name" : "Short Text Widget Field",
+      "type" : "Symbol",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "longTextField",
+      "name" : "Long Text Field",
+      "type" : "Text",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "aSingleUnion",
+      "name" : "A Single Union",
+      "type" : "Link",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ {
+        "linkContentType" : [ "otherEntity", "stillAnotherEntity" ]
+      } ],
+      "omitted" : false,
+      "disabled" : false,
+      "linkType" : "Entry"
+    }, {
+      "id" : "manyUnions",
+      "name" : "Many Unions",
+      "type" : "Array",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false,
+      "items" : {
+        "type" : "Link",
+        "linkType" : "Entry",
+        "validations" : [ {
+          "linkContentType" : [ "otherEntity", "stillAnotherEntity" ]
+        } ]
+      }
+    }, {
+      "id" : "starsField",
+      "name" : "Stars Field",
+      "type" : "Integer",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "siONoField",
+      "name" : "Si O No Field",
+      "type" : "Boolean",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "dateOnlyField",
+      "name" : "Date Only Field",
+      "type" : "Date",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "timeField",
+      "name" : "Time Field",
+      "type" : "Date",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "fullDateTimeField",
+      "name" : "Full Date Time Field",
+      "type" : "Date",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "americanStyleTimeField",
+      "name" : "American Style Time Field",
+      "type" : "Date",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "optionalLocationField",
+      "name" : "Optional Location Field",
+      "type" : "Location",
+      "localized" : false,
+      "required" : false,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "omittedField",
+      "name" : "Omitted Field",
+      "type" : "Symbol",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : true,
+      "disabled" : false
+    }, {
+      "id" : "disabledField",
+      "name" : "Disabled Field",
+      "type" : "Symbol",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : true
+    }, {
+      "id" : "omittedDisabledField",
+      "name" : "Omitted Disabled Field",
+      "type" : "Number",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : true,
+      "disabled" : true
+    }, {
+      "id" : "aSingleAssetField",
+      "name" : "A Single Asset Field",
+      "type" : "Link",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false,
+      "linkType" : "Asset"
+    }, {
+      "id" : "manyAssetsField",
+      "name" : "Many Assets Field",
+      "type" : "Array",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false,
+      "items" : {
+        "type" : "Link",
+        "linkType" : "Asset",
+        "validations" : [ ]
+      }
+    }, {
+      "id" : "manyAssetsGalleryField",
+      "name" : "Many Assets Gallery Field",
+      "type" : "Array",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false,
+      "items" : {
+        "type" : "Link",
+        "linkType" : "Asset",
+        "validations" : [ ]
+      }
+    } ],
+    "displayField" : "shortTextField"
+  }, {
+    "sys" : {
+      "space" : {
+        "sys" : {
+          "type" : "Link",
+          "linkType" : "Space",
+          "id" : "oewsurrg31ok"
+        }
+      },
+      "id" : "stillAnotherEntity",
+      "type" : "ContentType",
+      "publishedVersion" : 1
+    },
+    "name" : "Still Another Entity",
+    "description" : null,
+    "fields" : [ {
+      "id" : "aSingleReference",
+      "name" : "A Single Reference",
+      "type" : "Link",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ {
+        "linkContentType" : [ "reference" ]
+      } ],
+      "omitted" : false,
+      "disabled" : false,
+      "linkType" : "Entry"
+    }, {
+      "id" : "manyReferences",
+      "name" : "Many References",
+      "type" : "Array",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ ],
+      "omitted" : false,
+      "disabled" : false,
+      "items" : {
+        "type" : "Link",
+        "linkType" : "Entry",
+        "validations" : [ {
+          "linkContentType" : [ "reference" ]
+        } ]
+      }
+    } ]
+  }, {
+    "sys" : {
+      "space" : {
+        "sys" : {
+          "type" : "Link",
+          "linkType" : "Space",
+          "id" : "oewsurrg31ok"
+        }
+      },
+      "id" : "validationEntity",
+      "type" : "ContentType",
+      "publishedVersion" : 1
+    },
+    "name" : "Validation Entity",
+    "description" : null,
+    "fields" : [ {
+      "id" : "platformField",
+      "name" : "Platform Field",
+      "type" : "Symbol",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ {
+        "in" : [ "iOS", "Android" ]
+      } ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "rangeField",
+      "name" : "Range Field",
+      "type" : "Integer",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ {
+        "range" : {
+          "min" : 5,
+          "max" : 15
+        },
+        "message" : "Must be between 5 and 15"
+      } ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "regexpField",
+      "name" : "Regexp Field",
+      "type" : "Symbol",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ {
+        "regexp" : {
+          "pattern" : "^such",
+          "flags" : "im"
+        }
+      } ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "uniqueField",
+      "name" : "Unique Field",
+      "type" : "Symbol",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ {
+        "unique" : true
+      } ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "dateRangeField",
+      "name" : "Date Range Field",
+      "type" : "Date",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ {
+        "dateRange" : {
+          "min" : "2017-05-01",
+          "max" : "2020-05-01"
+        }
+      } ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "enabledNodeTypesField",
+      "name" : "Enabled Node Types Field",
+      "type" : "RichText",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ {
+        "enabledNodeTypes" : [ "heading-1", "quote", "embedded-entry-block" ]
+      } ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "enabledMarksField",
+      "name" : "Enabled Marks Field",
+      "type" : "RichText",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ {
+        "enabledMarks" : [ "bold", "italics" ]
+      } ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "multipleValidationsField",
+      "name" : "Multiple Validations Field",
+      "type" : "Symbol",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ {
+        "in" : [ "foo", "bar" ],
+        "message" : "Should be foo or bar"
+      }, {
+        "size" : {
+          "min" : 2,
+          "max" : 5
+        },
+        "message" : "Should have 2 to 5 characters"
+      } ],
+      "omitted" : false,
+      "disabled" : false
+    }, {
+      "id" : "multipleAssetValidationsField",
+      "name" : "Multiple Asset Validations Field",
+      "type" : "Link",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ {
+        "linkMimetypeGroup" : [ "image" ],
+        "message" : "Must be of MIME-Type image"
+      }, {
+        "assetImageDimensions" : {
+          "width" : {
+            "min" : 100,
+            "max" : 1000
+          },
+          "height" : {
+            "min" : 200,
+            "max" : 2300
+          }
+        },
+        "message" : "Width must be 100-1000 and height 200-2300"
+      }, {
+        "assetFileSize" : {
+          "min" : 1048576,
+          "max" : 8388608
+        },
+        "message" : "File must be between 1048576B and 8388608B"
+      } ],
+      "omitted" : false,
+      "disabled" : false,
+      "linkType" : "Asset"
+    } ]
+  } ],
+  "editorInterfaces" : [ {
+    "sys" : {
+      "id" : "default",
+      "type" : "EditorInterface",
+      "space" : {
+        "sys" : {
+          "type" : "Link",
+          "linkType" : "Space",
+          "id" : "oewsurrg31ok"
+        }
+      },
+      "contentType" : {
+        "sys" : {
+          "id" : "otherEntity",
+          "type" : "Link",
+          "linkType" : "ContentType"
+        }
+      }
+    },
+    "controls" : [ {
+      "fieldId" : "aDateTime",
+      "widgetId" : "datePicker"
+    }, {
+      "fieldId" : "justForShow",
+      "widgetId" : "slugEditor"
+    } ]
+  }, {
+    "sys" : {
+      "id" : "default",
+      "type" : "EditorInterface",
+      "space" : {
+        "sys" : {
+          "type" : "Link",
+          "linkType" : "Space",
+          "id" : "oewsurrg31ok"
+        }
+      },
+      "contentType" : {
+        "sys" : {
+          "id" : "reference",
+          "type" : "Link",
+          "linkType" : "ContentType"
+        }
+      }
+    },
+    "controls" : [ {
+      "fieldId" : "shortTextField",
+      "widgetId" : "singleLine",
+      "settings" : {
+        "helpText" : "Field documentation"
+      }
+    }, {
+      "fieldId" : "defaultNameShortTextField",
+      "widgetId" : "singleLine"
+    }, {
+      "fieldId" : "manyShortTextsField",
+      "widgetId" : "listInput"
+    }, {
+      "fieldId" : "shortTextWidgetField",
+      "widgetId" : "slugEditor"
+    }, {
+      "fieldId" : "longTextField",
+      "widgetId" : "multipleLine"
+    }, {
+      "fieldId" : "aSingleUnion",
+      "widgetId" : "entryLinkEditor"
+    }, {
+      "fieldId" : "manyUnions",
+      "widgetId" : "entryLinksEditor"
+    }, {
+      "fieldId" : "starsField",
+      "widgetId" : "rating",
+      "settings" : {
+        "stars" : 10
+      }
+    }, {
+      "fieldId" : "siONoField",
+      "widgetId" : "boolean",
+      "settings" : {
+        "trueLabel" : "Si!",
+        "falseLabel" : "No!"
+      }
+    }, {
+      "fieldId" : "dateOnlyField",
+      "widgetId" : "datePicker",
+      "settings" : {
+        "format" : "dateonly"
+      }
+    }, {
+      "fieldId" : "timeField",
+      "widgetId" : "datePicker",
+      "settings" : {
+        "format" : "time"
+      }
+    }, {
+      "fieldId" : "fullDateTimeField",
+      "widgetId" : "datePicker",
+      "settings" : {
+        "format" : "timeZ"
+      }
+    }, {
+      "fieldId" : "americanStyleTimeField",
+      "widgetId" : "datePicker",
+      "settings" : {
+        "ampm" : "12"
+      }
+    }, {
+      "fieldId" : "optionalLocationField",
+      "widgetId" : "locationEditor"
+    }, {
+      "fieldId" : "omittedField",
+      "widgetId" : "singleLine"
+    }, {
+      "fieldId" : "disabledField",
+      "widgetId" : "singleLine"
+    }, {
+      "fieldId" : "omittedDisabledField",
+      "widgetId" : "numberEditor"
+    }, {
+      "fieldId" : "aSingleAssetField",
+      "widgetId" : "assetLinkEditor"
+    }, {
+      "fieldId" : "manyAssetsField",
+      "widgetId" : "assetLinksEditor"
+    }, {
+      "fieldId" : "manyAssetsGalleryField",
+      "widgetId" : "assetGalleryEditor"
+    } ]
+  }, {
+    "sys" : {
+      "id" : "default",
+      "type" : "EditorInterface",
+      "space" : {
+        "sys" : {
+          "type" : "Link",
+          "linkType" : "Space",
+          "id" : "oewsurrg31ok"
+        }
+      },
+      "contentType" : {
+        "sys" : {
+          "id" : "stillAnotherEntity",
+          "type" : "Link",
+          "linkType" : "ContentType"
+        }
+      }
+    },
+    "controls" : [ {
+      "fieldId" : "aSingleReference",
+      "widgetId" : "entryLinkEditor"
+    }, {
+      "fieldId" : "manyReferences",
+      "widgetId" : "entryLinksEditor"
+    } ]
+  }, {
+    "sys" : {
+      "id" : "default",
+      "type" : "EditorInterface",
+      "space" : {
+        "sys" : {
+          "type" : "Link",
+          "linkType" : "Space",
+          "id" : "oewsurrg31ok"
+        }
+      },
+      "contentType" : {
+        "sys" : {
+          "id" : "validationEntity",
+          "type" : "Link",
+          "linkType" : "ContentType"
+        }
+      }
+    },
+    "controls" : [ {
+      "fieldId" : "platformField",
+      "widgetId" : "singleLine"
+    }, {
+      "fieldId" : "rangeField",
+      "widgetId" : "numberEditor"
+    }, {
+      "fieldId" : "regexpField",
+      "widgetId" : "singleLine"
+    }, {
+      "fieldId" : "uniqueField",
+      "widgetId" : "singleLine"
+    }, {
+      "fieldId" : "dateRangeField",
+      "widgetId" : "datePicker"
+    }, {
+      "fieldId" : "enabledNodeTypesField",
+      "widgetId" : "richTextEditor"
+    }, {
+      "fieldId" : "enabledMarksField",
+      "widgetId" : "richTextEditor"
+    }, {
+      "fieldId" : "multipleValidationsField",
+      "widgetId" : "singleLine"
+    }, {
+      "fieldId" : "multipleAssetValidationsField",
+      "widgetId" : "assetLinkEditor"
+    } ]
+  } ]
+}
