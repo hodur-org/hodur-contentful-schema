@@ -210,7 +210,12 @@
                                  :link-type "Space"
                                  :id space-id}}
                    :id (name camelCaseName)
-                   :type "ContentType"}
+                   :type "ContentType"
+                   ;; FIXME: published-version here is a hack
+                   ;; Contentful's server doesn't seem to use/need this node at all
+                   ;; however, Contentful's CLI will skip importing editor interfaces
+                   ;; if this node is not present at the endity definition
+                   :published-version 1}
              :name (display-name t)
              :description doc
              :fields (parse-content-type-fields _parent)}
@@ -218,12 +223,16 @@
       display-field
       (assoc :display-field (->camelCaseString display-field)))))
 
-(defn ^:private parse-editor-type [{:keys [type/camelCaseName field/_parent] :as t}]
+(defn ^:private parse-editor-type [{:keys [type/camelCaseName field/_parent] :as t}
+                                   {:keys [space-id]}]
   {:sys {:id "default"
          :type "EditorInterface"
-         :content-type {:id (name camelCaseName)
-                        :type "Link"
-                        :link-type "ContentType"}}
+         :space {:sys {:type "Link"
+                       :link-type "Space"
+                       :id space-id}}
+         :content-type {:sys {:id (name camelCaseName)
+                              :type "Link"
+                              :link-type "ContentType"}}}
    :controls (parse-editor-fields _parent)})
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -235,7 +244,7 @@
 
 (defn ^:private parse-editor-interfaces [types opts]
   (reduce (fn [c t]
-            (conj c (parse-editor-type t)))
+            (conj c (parse-editor-type t opts)))
           [] types))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

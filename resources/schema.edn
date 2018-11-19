@@ -32,6 +32,7 @@
   many-unions
 
   ^{:type Integer
+    :contentful/widget-id "rating"
     :contentful/stars 10}
   stars-field
 
