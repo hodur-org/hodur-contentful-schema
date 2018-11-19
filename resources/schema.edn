@@ -62,7 +62,7 @@
   optional-location-field]
 
  OtherEntity
- [^:DateTime
+ [^DateTime
   a-date-time
 
   ^{:type String
@@ -84,44 +84,47 @@
 
  ValidationEntity
  [^{:type String
-    :contentful/validation-in ["iOS" "Android"]}
+    :contentful/validations [{:in ["iOS" "Android"]}]}
   platform-field
 
   ^{:type Integer
-    :contentful/validation-range [5 15]
-    :contentful/validation-range-message "Must be between 5 and 15"}
+    :contentful/validations [{:range {:min 5
+                                      :max 15}
+                              :message "Must be between 5 and 15"}]}
   range-field
 
   ^{:type String
-    :contentful/validation-regexp-pattern "^such"
-    :contentful/validation-regexp-flags "im"}
+    :contentful/validations [{:regexp {:pattern "^such"
+                                       :flags "im"}}]}
   regexp-field
 
   ^{:type String
-    :contentful/validation-unique true}
+    :contentful/validations [{:unique true}]}
   unique-field
 
   ^{:type DateTime
-    :contentful/validation-date-range ["2017-05-01" "2020-05-01"]}
+    :contentful/validations [{:date-range {:min "2017-05-01"
+                                           :max "2020-05-01"}}]}
   date-range-field
 
   ^{:type String
     :contentful/type "RichText"
-    :contentful/validation-enabled-node-types ["heading-1"
-                                               "quote"
-                                               "embedded-entry-block"]}
+    :contentful/validations [{:enabled-node-types ["heading-1"
+                                                   "quote"
+                                                   "embedded-entry-block"]}]}
   enabled-node-types-field
 
   ^{:type String
     :contentful/type "RichText"
-    :contentful/validation-enabled-marks ["bold" "italics"]}
+    :contentful/validations [{:enabled-marks ["bold" "italics"]}]}
   enabled-marks-field
 
   ^{:type String
-    :contentful/validation-in ["foo" "bar"]
-    :contentful/validation-in-message "Should be foo or bar"
-    :contentful/validation-size [2 5]
-    :contentful/validation-size-message "Should have 2 to 5 characters"}
+    :contentful/validations [{:in ["foo" "bar"]
+                              :message "Should be foo or bar"}
+                             {:size {:min 2
+                                     :max 5}
+                              :message "Should have 2 to 5 characters"}]}
   multiple-validations-field]
 
  ]

@@ -91,11 +91,12 @@
     {:type (spec-field-type field)
      :validations []}))
 
-(defn ^:private get-field-validations [field]
-  (if (and (is-field-user-entity? field)
-           (= :one (field-card-type field)))
-    [{:link-content-type (get-link-content-types field)}]
-    []))
+(defn ^:private get-field-validations [{:keys [contentful/validations] :as field}]
+  (let [base-coll (if (and (is-field-user-entity? field)
+                           (= :one (field-card-type field)))
+                    [{:link-content-type (get-link-content-types field)}]
+                    [])]
+    (concat base-coll validations)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
