@@ -14,7 +14,8 @@
   default-name-short-text-field
 
   ^{:type String
-    :cardinality [0 n]}
+    :cardinality [0 n]
+    :contentful/widget-id "listInput"}
   many-short-texts-field
   
   ^{:type String
@@ -62,7 +63,6 @@
     :contentful/type "Location"}
   optional-location-field
 
-
   ^{:type String
     :contentful/omitted true}
   omitted-field
@@ -74,14 +74,29 @@
   ^{:type Float
     :contentful/omitted true
     :contentful/disabled true}
-  omitted-disabled-field]
+  omitted-disabled-field
+
+  ^{:type String
+    :contentful/type "Asset"}
+  a-single-asset-field
+
+  ^{:type String
+    :cardinality [0 n]
+    :contentful/type "Asset"}
+  many-assets-field
+
+  ^{:type String
+    :cardinality [0 n]
+    :contentful/type "Asset"
+    :contentful/widget-id "assetGalleryEditor"}
+  many-assets-gallery-field]
 
  OtherEntity
  [^DateTime
   a-date-time
 
   ^{:type String
-    :contentful/widget-id "slug"
+    :contentful/widget-id "slugEditor"
     :contentful/display-field true}
   just-for-show]
 
@@ -140,6 +155,20 @@
                              {:size {:min 2
                                      :max 5}
                               :message "Should have 2 to 5 characters"}]}
-  multiple-validations-field]
+  multiple-validations-field
+
+  ^{:contentful/type "Asset"
+    :contentful/validations [{:link-mimetype-group ["image"]
+                              :message "Must be of MIME-Type image"}
+                             {:asset-image-dimensions
+                              {:width {:min 100
+                                       :max 1000}
+                               :height {:min 200
+                                        :max 2300}}
+                              :message "Width must be 100-1000 and height 200-2300"}
+                             {:asset-file-size {:min 1048576
+                                                :max 8388608}
+                              :message "File must be between 1048576B and 8388608B"}]}
+  multiple-asset-validations-field]
 
  ]

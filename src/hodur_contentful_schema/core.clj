@@ -48,7 +48,7 @@
 
 (defn ^:private base-spec-field-type [field]
   (let [contentful-type (-> field :contentful/type)
-        ref-type (-> field :field/type :type/camelCaseName)]
+        ref-type (some-> field :field/type :type/PascalCaseName name)]
     (or contentful-type ref-type)))
 
 (defmulti ^:private spec-field-type base-spec-field-type)
@@ -64,6 +64,8 @@
 (defmethod spec-field-type "DateTime" [_] "Date")
 
 (defmethod spec-field-type "ID" [_] "Symbol")
+
+(defmethod spec-field-type "Asset" [_] "Link")
 
 (defmethod spec-field-type :default [field]
   (base-spec-field-type field))
@@ -83,14 +85,6 @@
     (map #(name (:field/camelCaseName %)) (-> field :field/type :field/_parent))
     [(-> field :field/type :type/camelCaseName name)]))
 
-(defn ^:private get-type-many [field]
-  (if (is-field-user-entity? field)
-    {:type "Link"
-     :link-type "Entry"
-     :validations [{:link-content-type (get-link-content-types field)}]}
-    {:type (spec-field-type field)
-     :validations []}))
-
 (defn ^:private get-field-validations [{:keys [contentful/validations] :as field}]
   (let [base-coll (if (and (is-field-user-entity? field)
                            (= :one (field-card-type field)))
@@ -98,16 +92,41 @@
                     [])]
     (concat base-coll validations)))
 
+(defn ^:private get-type-many [field]
+  (cond
+    (is-field-user-entity? field)
+    {:type "Link"
+     :link-type "Entry"
+     :validations [{:link-content-type (get-link-content-types field)}]}
+
+    (= "Asset" (base-spec-field-type field))
+    {:type "Link"
+     :link-type "Asset"
+     :validations (get-field-validations field)}
+
+    :otherwise
+    {:type (spec-field-type field)
+     :validations []}))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmulti ^:private get-field-widget
-  (fn [field]
-    (let [contentful-widget-id (-> field :contentful/widget-id)
-          spec-type (spec-field-type field)
-          is-user? (is-field-user-entity? field)]
-      (if is-user?
-        "Entry"
-        (or contentful-widget-id spec-type)))))
+(defn ^:private get-field-widget-logic [field]
+  (let [contentful-widget-id (-> field :contentful/widget-id)
+        spec-type (spec-field-type field)
+        base-type (base-spec-field-type field)
+        is-user? (is-field-user-entity? field)]
+    (cond
+      is-user?
+      "Entry"
+
+      (and (= "Asset" base-type)
+           (not contentful-widget-id))
+      base-type
+
+      :otherwise
+      (or contentful-widget-id spec-type))))
+
+(defmulti ^:private get-field-widget get-field-widget-logic)
 
 (defmethod get-field-widget "Symbol" [_] "singleLine")
 
@@ -177,6 +196,10 @@
     (and (is-field-user-entity? field)
          (= :one (field-card-type field)))
     (assoc :link-type "Entry")
+
+    (and (= "Asset" (base-spec-field-type field))
+         (= :one (field-card-type field)))
+    (assoc :link-type "Asset")
     
     (= :many (field-card-type field))
     (assoc :items (get-type-many field))))
