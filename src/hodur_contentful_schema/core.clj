@@ -154,8 +154,14 @@
     stars       (assoc :stars stars)
     format      (assoc :format format)
     ampm        (assoc :ampm ampm)))
-  
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn ^:private omitted-field? [{:keys [contentful/omitted]}]
+  (boolean omitted))
+
+(defn ^:private disabled-field? [{:keys [contentful/disabled]}]
+  (boolean disabled))
 
 (defn ^:private parse-content-type-field [{:keys [field/camelCaseName
                                                   field/optional] :as field}]
@@ -165,8 +171,8 @@
            :localized false
            :required (not optional)
            :validations (get-field-validations field)
-           :disabled false
-           :omitted false}
+           :omitted (omitted-field? field)
+           :disabled (disabled-field? field)}
 
     (and (is-field-user-entity? field)
          (= :one (field-card-type field)))

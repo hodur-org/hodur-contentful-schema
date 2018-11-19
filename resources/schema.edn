@@ -60,7 +60,21 @@
   ^{:type String
     :optional true
     :contentful/type "Location"}
-  optional-location-field]
+  optional-location-field
+
+
+  ^{:type String
+    :contentful/omitted true}
+  omitted-field
+
+  ^{:type String
+    :contentful/disabled true}
+  disabled-field
+
+  ^{:type Float
+    :contentful/omitted true
+    :contentful/disabled true}
+  omitted-disabled-field]
 
  OtherEntity
  [^DateTime
