@@ -192,7 +192,7 @@ $ npx contentful-cli space import --config contentful-config.json --content-file
 #+END_SRC
 
   If no ~:contentful/display-name~ is provided, the plugin will
-  default to a captilized version of the entity or field name.
+  default to a capitalized version of the entity or field name.
 
 * Making a Field the Display of an Entity
 
@@ -202,7 +202,7 @@ $ npx contentful-cli space import --config contentful-config.json --content-file
   In order to specify which field is used for it, mark it with
   ~:contentful/display-field true~.
 
-* Documentation
+* Documenting Entities and Fields
 
   The marker ~:doc~ is fully supported. Both entity and field
   documentations will show on the admin for editors.
@@ -228,7 +228,7 @@ $ npx contentful-cli space import --config contentful-config.json --content-file
   are managed internally by the plugin but, for reference:
 
   + ~Array~ (default for any multiple ~cardinality~)
-  + ~Link~ (default for Assets and other entities)
+  + ~Link~ (default for linking to one asset and other user-specified entities)
 
   Last but not least, you can also specify ~Asset~ as a special type
   that will point to an asset (or more if cardinality is many) on the
@@ -244,11 +244,11 @@ $ npx contentful-cli space import --config contentful-config.json --content-file
   [[https://www.contentful.com/developers/docs/references/content-management-api/#/reference/content-types/content-type][field validations available on Contentful can be found here]].
 
   Here's an example showing some of these combined. They are pretty
-  self-exaplantory:
+  self-explanatory:
 
 #+BEGIN_SRC clojure
   [ValidationEntity
-   [;; will validate that `platform-field` is either `iOS` os `Android`
+   [;; will validate that `platform-field` is either `iOS` or `Android`
     ^{:type String
       :contentful/validations [{:in ["iOS" "Android"]}]}
     platform-field
@@ -326,7 +326,7 @@ $ npx contentful-cli space import --config contentful-config.json --content-file
   widget is not specified a reasonable default one will be selected.
 
   A full list of the [[https://www.contentful.com/developers/docs/concepts/editor-interfaces/][available widgets can be found here]]. As of this
-  writing, the options are::
+  writing, the options are:
 
 | Widget ID          | Applicable field types        | Description                                                                                                     |
 |--------------------+-------------------------------+-----------------------------------------------------------------------------------------------------------------|
@@ -334,7 +334,7 @@ $ npx contentful-cli space import --config contentful-config.json --content-file
 | assetLinksEditor   | Asset (array)                 | Search, attach, reorder, and preview multiple assets.                                                           |
 | assetGalleryEditor | Asset (array)                 | Search, attach, reorder, and preview multiple assets in a gallery layout                                        |
 | boolean            | Boolean                       | Radio buttons with customizable labels.                                                                         |
-| datePicker         | Date                          | Select date, time, and timezon.                                                                                 |
+| datePicker         | Date                          | Select date, time, and timezone.                                                                                |
 | entryLinkEditor    | Entry                         | Search and attach another entry.                                                                                |
 | entryLinksEditor   | Entry (array)                 | Search and attach multiple entries.                                                                             |
 | entryCardEditor    | Entry                         | Search, attach, and preview another entry.                                                                      |
@@ -354,7 +354,8 @@ $ npx contentful-cli space import --config contentful-config.json --content-file
 | dropdown           | Text, Symbol, Integer, Number | A <input type="select"> element. It uses the values from an in validation on the content type field as options. |
 | radio              | Text, Symbol, Integer, Number | A group of radio buttons. One for each value from the in validation on the content type field                   |
 
-  Example:
+
+  Here's a simple example:
 
 #+BEGIN_SRC clojure
   [MarketingEntry
@@ -424,7 +425,7 @@ $ npx contentful-cli space import --config contentful-config.json --content-file
 
   + This plugin ignores ~interfaces~ and ~params~.
   + ~camelCasing~ is used on all naming conventions
-  + There are no validations on the widgtes, validations, or other
+  + There are no validations on the widgets, validations, or other
     Contentful-specific markers. They are simply passed over to
     Contentful.
   + Unions are supported by creating entry relationships that support
