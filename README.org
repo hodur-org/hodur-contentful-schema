@@ -3,8 +3,7 @@
 #+EMAIL:   info@tiagoluchini.eu
 #+OPTIONS: toc:t
 
-FIXME: badges
-[[https://circleci.com/gh/luchiniatwork/hodur-contentful-schema.svg?style=shield&circle-token=86a1a26155a45d7ec4aba873e975b15ce37d1f5a]]
+[[https://circleci.com/gh/luchiniatwork/hodur-contentful-schema.svg?style=shield&circle-token=146b7ab96c4056373f64b69de3200c2485266c1f]]
 [[https://img.shields.io/clojars/v/hodur/engine.svg]]
 [[https://img.shields.io/clojars/v/hodur/contentful-schema.svg]]
 [[https://img.shields.io/badge/license-MIT-blue.svg]]
@@ -53,6 +52,7 @@ Contentful environments.
   You should ~require~ it any way you see fit:
 
 #+BEGIN_SRC clojure
+  (require '[hodur-engine.core :as hodur])
   (require '[hodur-contentful-schema.core :as hodur-contentful])
 #+END_SRC
 
