@@ -63,7 +63,7 @@
 
 (defmethod spec-field-type "DateTime" [_] "Date")
 
-(defmethod spec-field-type "ID" [_] "Symbol")
+(defmethod spec-field-type "Id" [_] "Symbol")
 
 (defmethod spec-field-type "Asset" [_] "Link")
 
@@ -85,12 +85,21 @@
     (map #(name (:field/PascalCaseName %)) (-> field :field/type :field/_parent))
     [(-> field :field/type :type/PascalCaseName name)]))
 
+(defn ^:private get-base-validations [field]
+  (cond
+    (and (is-field-user-entity? field)
+         (= :one (field-card-type field)))
+    [{:link-content-type (get-link-content-types field)}]
+
+    (and (= "ID" (-> field :field/type :type/name))
+         (= :one (field-card-type field)))
+    [{:unique true}]
+
+    :otherwise
+    []))
+
 (defn ^:private get-field-validations [{:keys [contentful/validations] :as field}]
-  (let [base-coll (if (and (is-field-user-entity? field)
-                           (= :one (field-card-type field)))
-                    [{:link-content-type (get-link-content-types field)}]
-                    [])]
-    (concat base-coll validations)))
+  (concat (get-base-validations field) validations))
 
 (defn ^:private get-type-many [field]
   (cond

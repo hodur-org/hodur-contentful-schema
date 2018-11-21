@@ -32,6 +32,17 @@
       "validations" : [ ],
       "omitted" : false,
       "disabled" : false
+    }, {
+      "id" : "anIdField",
+      "name" : "An Id Field",
+      "type" : "Symbol",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ {
+        "unique" : true
+      } ],
+      "omitted" : false,
+      "disabled" : false
     } ],
     "displayField" : "justForShow"
   }, {
@@ -478,6 +489,9 @@
     }, {
       "fieldId" : "justForShow",
       "widgetId" : "slugEditor"
+    }, {
+      "fieldId" : "anIdField",
+      "widgetId" : "singleLine"
     } ]
   }, {
     "sys" : {

@@ -252,6 +252,16 @@ $ npx contentful-cli space import --config contentful-config.json --content-file
   Also, refer to the [[#choosing-widget-for-fields][widget configuration below]] as there are different
   widgets that can be used for asset selection.
 
+* ID Fields
+
+  ~ID~ fields are sent to Contentful as ~Symbol~ by default. Please do
+  provide a different ~:contentful/type~ if you need something else.
+
+  In addition, ~ID~ fields are automatically marked as unique by
+  default. If you prefer to control this more granularly, use a more
+  basic data type (~String~ i.e.) and detail your validations manually
+  as documented in the section below.
+
 * Field Validations
 
   This plugin acts as a pass-through to the validations specified on

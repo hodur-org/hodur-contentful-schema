@@ -98,7 +98,10 @@
   ^{:type String
     :contentful/widget-id "slugEditor"
     :contentful/display-field true}
-  just-for-show]
+  just-for-show
+
+  ^{:type ID}
+  an-id-field]
 
  StillAnotherEntity
  [^{:type Reference}
