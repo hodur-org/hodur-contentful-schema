@@ -236,6 +236,22 @@ $ npx contentful-cli space import --config contentful-config.json --content-file
 
   + ~Asset~
 
+* Asset Fields
+
+  By specifying ~:contentful/type "Asset"~ you are letting Contentful
+  know that a certain field should be associated with and asset from
+  the digital asset manager.
+
+  This field can also have cardinality of many (~[0 n]~) and it should
+  let editors choose several assets for it.
+
+  Please refer to the section describing [[#field-validations][further validations down
+  below]] for examples on how to limit to certain kind of assets (images
+  for instance) and certain image features.
+
+  Also, refer to the [[#choosing-widget-for-fields][widget configuration below]] as there are different
+  widgets that can be used for asset selection.
+
 * Field Validations
 
   This plugin acts as a pass-through to the validations specified on
