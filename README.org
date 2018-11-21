@@ -46,7 +46,7 @@ Contentful environments.
 
 #+BEGIN_SRC clojure
   {:deps {hodur/engine            {:mvn/version "0.1.4"}
-          hodur/contentful-schema {:mvn/version "0.1.0"}}}
+          hodur/contentful-schema {:mvn/version "0.1.1"}}}
 #+END_SRC
 
   You should ~require~ it any way you see fit:
