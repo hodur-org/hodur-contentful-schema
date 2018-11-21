@@ -262,6 +262,22 @@ $ npx contentful-cli space import --config contentful-config.json --content-file
   basic data type (~String~ i.e.) and detail your validations manually
   as documented in the section below.
 
+* Enum Fields
+
+  Fields that point to ~:enum~ entities will be sent to Contentful as
+  ~Symbol~ by default. If you need a different type, please provide it
+  via ~:contentful/type~.
+
+  By default the values of the enum are used as an ~:in~ validation
+  for the field. Therefore, the editor will be constrained to select
+  one of the options.
+
+  A ~dropdown~ widget is chosen by default in order to help editors
+  understand the selection. If you prefer a different rendering (such
+  as a ~radio~ or a ~singleLine~) you can specify it with the
+  ~:contentful/widget-id~ marker as documented in the respective
+  section below.
+
 * Field Validations
 
   This plugin acts as a pass-through to the validations specified on

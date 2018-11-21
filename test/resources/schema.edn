@@ -101,7 +101,14 @@
   just-for-show
 
   ^{:type ID}
-  an-id-field]
+  an-id-field
+
+  ^{:type Gender}
+  gender-field]
+
+ ^:enum
+ Gender
+ [MALE FEMALE]
 
  StillAnotherEntity
  [^{:type Reference}

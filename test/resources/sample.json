@@ -43,6 +43,17 @@
       } ],
       "omitted" : false,
       "disabled" : false
+    }, {
+      "id" : "genderField",
+      "name" : "Gender Field",
+      "type" : "Symbol",
+      "localized" : false,
+      "required" : true,
+      "validations" : [ {
+        "in" : ["MALE", "FEMALE"]
+      } ],
+      "omitted" : false,
+      "disabled" : false
     } ],
     "displayField" : "justForShow"
   }, {
@@ -492,6 +503,9 @@
     }, {
       "fieldId" : "anIdField",
       "widgetId" : "singleLine"
+    }, {
+      "fieldId" : "genderField",
+      "widgetId" : "dropdown"
     } ]
   }, {
     "sys" : {

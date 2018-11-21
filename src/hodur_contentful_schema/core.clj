@@ -17,7 +17,8 @@
                         [?t :contentful/tag true]
                         [?t :type/nature :user]
                         (not [?t :type/interface true])
-                        (not [?t :type/union true])]
+                        (not [?t :type/union true])
+                        (not [?t :type/enum true])]
                       @conn)
                  vec flatten)]
     (->> eids
@@ -40,6 +41,9 @@
 (defn ^:private is-field-user-entity? [field]
   (= :user (field-type-nature field)))
 
+(defn ^:private is-field-enum-entity? [field]
+  (-> field :field/type :type/enum))
+
 (defn ^:private field-card-type [{:keys [field/cardinality] :as field}]
   (if (and (= 1 (first cardinality))
            (= 1 (second cardinality)))
@@ -48,8 +52,9 @@
 
 (defn ^:private base-spec-field-type [field]
   (let [contentful-type (-> field :contentful/type)
-        ref-type (some-> field :field/type :type/PascalCaseName name)]
-    (or contentful-type ref-type)))
+        ref-type (some-> field :field/type :type/PascalCaseName name)
+        enum? (is-field-enum-entity? field)]
+    (if enum? "Enum" (or contentful-type ref-type))))
 
 (defmulti ^:private spec-field-type base-spec-field-type)
 
@@ -67,6 +72,8 @@
 
 (defmethod spec-field-type "Asset" [_] "Link")
 
+(defmethod spec-field-type "Enum" [_] "Symbol")
+
 (defmethod spec-field-type :default [field]
   (base-spec-field-type field))
 
@@ -76,7 +83,8 @@
         card-type (field-card-type field)]
     (if (= :many card-type)
       "Array"
-      (if (is-field-user-entity? field)
+      (if (and (is-field-user-entity? field)
+               (not (is-field-enum-entity? field)))
         "Link"
         spec-type))))
 
@@ -87,6 +95,9 @@
 
 (defn ^:private get-base-validations [field]
   (cond
+    (is-field-enum-entity? field)
+    [{:in (map #(:field/name %) (-> field :field/type :field/_parent))}]
+
     (and (is-field-user-entity? field)
          (= :one (field-card-type field)))
     [{:link-content-type (get-link-content-types field)}]
@@ -123,9 +134,13 @@
   (let [contentful-widget-id (-> field :contentful/widget-id)
         spec-type (spec-field-type field)
         base-type (base-spec-field-type field)
-        is-user? (is-field-user-entity? field)]
+        user? (is-field-user-entity? field)
+        enum? (is-field-enum-entity? field)]
     (cond
-      is-user?
+      enum?
+      "Enum"
+
+      user?
       "Entry"
 
       (and (= "Asset" base-type)
@@ -154,6 +169,8 @@
 (defmethod get-field-widget "Date" [_] "datePicker")
 
 (defmethod get-field-widget "RichText" [_] "richTextEditor")
+
+(defmethod get-field-widget "Enum" [_] "dropdown")
 
 (defmethod get-field-widget "Asset" [field]
   (if (= :one (field-card-type field))
@@ -203,7 +220,8 @@
            :disabled (disabled-field? field)}
 
     (and (is-field-user-entity? field)
-         (= :one (field-card-type field)))
+         (= :one (field-card-type field))
+         (not (is-field-enum-entity? field)))
     (assoc :link-type "Entry")
 
     (and (= "Asset" (base-spec-field-type field))
