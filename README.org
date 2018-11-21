@@ -423,8 +423,9 @@ $ npx contentful-cli space import --config contentful-config.json --content-file
 
 * Limitations & Assumptions
 
-  + This plugin ignores ~interfaces~ and ~params~.
-  + ~camelCasing~ is used on all naming conventions
+  + This plugin ignores ~interfaces~ and field parameters.
+  + ~PascalCasing~ is used on naming entities and ~camelCasing~ is
+    used on all fields
   + There are no validations on the widgets, validations, or other
     Contentful-specific markers. They are simply passed over to
     Contentful.

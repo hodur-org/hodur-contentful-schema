@@ -82,8 +82,8 @@
 
 (defn ^:private get-link-content-types [field]
   (if (-> field :field/type :type/union)
-    (map #(name (:field/camelCaseName %)) (-> field :field/type :field/_parent))
-    [(-> field :field/type :type/camelCaseName name)]))
+    (map #(name (:field/PascalCaseName %)) (-> field :field/type :field/_parent))
+    [(-> field :field/type :type/PascalCaseName name)]))
 
 (defn ^:private get-field-validations [{:keys [contentful/validations] :as field}]
   (let [base-coll (if (and (is-field-user-entity? field)
@@ -232,13 +232,13 @@
                               field/camelCaseName]}]
                    (when display-field (name camelCaseName))))))
 
-(defn ^:private parse-content-type [{:keys [type/camelCaseName type/doc field/_parent] :as t}
+(defn ^:private parse-content-type [{:keys [type/PascalCaseName type/doc field/_parent] :as t}
                                     {:keys [space-id]}]
   (let [display-field (get-display-field t)]
     (cond-> {:sys {:space {:sys {:type "Link"
                                  :link-type "Space"
                                  :id space-id}}
-                   :id (name camelCaseName)
+                   :id (name PascalCaseName)
                    :type "ContentType"
                    ;; FIXME: published-version here is a hack
                    ;; Contentful's server doesn't seem to use/need this node at all
@@ -252,14 +252,14 @@
       display-field
       (assoc :display-field (->camelCaseString display-field)))))
 
-(defn ^:private parse-editor-type [{:keys [type/camelCaseName field/_parent] :as t}
+(defn ^:private parse-editor-type [{:keys [type/PascalCaseName field/_parent] :as t}
                                    {:keys [space-id]}]
   {:sys {:id "default"
          :type "EditorInterface"
          :space {:sys {:type "Link"
                        :link-type "Space"
                        :id space-id}}
-         :content-type {:sys {:id (name camelCaseName)
+         :content-type {:sys {:id (name PascalCaseName)
                               :type "Link"
                               :link-type "ContentType"}}}
    :controls (parse-editor-fields _parent)})
